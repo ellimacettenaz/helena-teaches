@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contrato de Aulas de Inglês</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #ffffff; --bg2: #fffdf7; --bg3: #f0eeff;
+  --border: #e2d8f0; --text: #1a1a18; --text2: #5a5a56; --text3: #9a9a94;
+  --radius: 10px; --rs: 6px;
+  --pink: #FADADD; --blue: #DDEEFF; --mint: #DFF5EA; --lav: #E6D9FF; --yell: #FFF2B3;
+}
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg2); color: var(--text); min-height: 100vh; padding: 24px 16px 48px; }
+.wrap { max-width: 640px; margin: 0 auto; }
+h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 4px; border-bottom: 2px solid var(--lav); padding-bottom: 6px; display: inline-block; }
+.sub { font-size: 13px; color: var(--text3); margin-bottom: 24px; }
+.tabs { display: flex; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 4px; margin-bottom: 20px; gap: 4px; }
+.tab { flex: 1; padding: 10px 12px; font-size: 14px; font-weight: 500; cursor: pointer; background: transparent; color: var(--text2); border: none; border-radius: 7px; font-family: inherit; }
+.tab.active { background: var(--bg); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.08); border-bottom: 2px solid var(--pink); }
+.panel { display: none; }
+.panel.active { display: block; }
+.info-box { background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--pink); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 20px; font-size: 13px; color: var(--text2); line-height: 1.8; }
+.ir { display: flex; align-items: flex-start; margin-bottom: 4px; }
+.ir:last-child { margin-bottom: 0; }
+.st { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; background: var(--blue); border: 1px solid var(--border); border-radius: 50%; font-size: 11px; font-weight: 600; margin-right: 8px; color: var(--text); flex-shrink: 0; }
+.sec { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.6px; margin: 18px 0 10px; }
+.sec:first-child { margin-top: 0; }
+.field { margin-bottom: 12px; }
+.field label { display: block; font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 5px; }
+.frow { display: flex; gap: 10px; margin-bottom: 12px; }
+.frow .field { flex: 1; margin-bottom: 0; }
+.frow .field.sm { flex: 0 0 148px; }
+.frow .field.xs { flex: 0 0 108px; }
+input { width: 100%; padding: 10px 13px; border: 1px solid var(--border); border-radius: var(--rs); font-size: 14px; font-family: inherit; color: var(--text); background: var(--bg); outline: none; -webkit-appearance: none; }
+input:focus { border-color: var(--text); }
+.divider { height: 1px; background: var(--border); margin: 18px 0; }
+.prev-label { font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px; margin-top: 18px; }
+.prev-box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; font-size: 13px; line-height: 1.75; white-space: pre-wrap; max-height: 240px; overflow-y: auto; color: var(--text); }
+.btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px 20px; border: 1px solid var(--border); border-radius: var(--rs); font-size: 14px; font-weight: 500; font-family: inherit; cursor: pointer; background: var(--bg); color: var(--text); margin-top: 16px; }
+.btn.primary { background: var(--pink); color: #1a1a18; border-color: #e8b8be; margin-top: 16px; font-weight: 600; }
+.ok { display: none; background: #f0faf4; border: 1px solid #b8e8cc; border-radius: var(--rs); padding: 12px 14px; font-size: 13px; color: #1a6b3c; margin-top: 12px; line-height: 1.5; }
+.empty { text-align: center; padding: 32px 20px; color: var(--text3); font-size: 14px; line-height: 1.6; }
+.empty .icon { font-size: 32px; margin-bottom: 10px; }
+@media (max-width: 480px) {
+  body { padding: 16px 12px 40px; }
+  h1 { font-size: 19px; }
+  .tab { font-size: 13px; padding: 9px 6px; }
+  .frow { flex-direction: column; }
+  .frow .field.sm, .frow .field.xs { flex: unset; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Contrato de aulas de inglês</h1>
+  <p class="sub">Sem cadastro · Sem serviços externos · Funciona offline</p>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('prof',this)">✏️ Sou a professora</button>
+    <button class="tab" onclick="switchTab('aluna',this)">📝 Sou a aluna</button>
+  </div>
+
+  <!-- PROFESSORA -->
+  <div class="panel active" id="tab-prof">
+    <div class="info-box">
+      <div class="ir"><span class="st">1</span>Preencha os dados abaixo</div>
+      <div class="ir"><span class="st">2</span>Clique em "Gerar arquivo para assinatura"</div>
+      <div class="ir"><span class="st">3</span>Envie o arquivo HTML gerado para sua aluna</div>
+    </div>
+
+    <div class="sec">Dados da aluna</div>
+    <div class="frow">
+      <div class="field">
+        <label>Nome completo</label>
+        <input type="text" id="f-nome" placeholder="Ex: Cami Silva" oninput="preview()">
+      </div>
+      <div class="field sm">
+        <label>CPF</label>
+        <input type="text" id="f-cpf" placeholder="000.000.000-00" maxlength="14" oninput="mCPF(this);preview()">
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="sec">Condições do contrato</div>
+    <div class="frow">
+      <div class="field xs">
+        <label>Aulas/semana</label>
+        <input type="text" id="f-freq" placeholder="Ex: 2" oninput="preview()">
+      </div>
+      <div class="field xs">
+        <label>Aulas/mês</label>
+        <input type="text" id="f-mes" placeholder="Ex: 8" oninput="preview()">
+      </div>
+      <div class="field xs">
+        <label>Duração (min)</label>
+        <input type="text" id="f-dur" placeholder="Ex: 30" oninput="preview()">
+      </div>
+      <div class="field xs">
+        <label>Valor mensal</label>
+        <input type="text" id="f-val" placeholder="Ex: 150" oninput="preview()">
+      </div>
+    </div>
+
+    <div class="prev-label">Prévia do contrato</div>
+    <div class="prev-box" id="prev"></div>
+
+    <button class="btn primary" onclick="gerar()">Gerar arquivo para assinatura ↓</button>
+    <div class="ok" id="ok-msg">✓ Arquivo gerado! Envie o <strong>contrato-para-assinar.html</strong> para sua aluna.</div>
+  </div>
+
+  <!-- ALUNA -->
+  <div class="panel" id="tab-aluna">
+    <div class="empty">
+      <div class="icon">📬</div>
+      <div>Sua professora vai te mandar um arquivo <strong>.html</strong>.<br>Abra esse arquivo no celular ou computador para assinar.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+var PROF  = 'Helena Di Federico';
+var CPFP  = '089.088.079-42';
+var PIX   = '08908807942';
+var CIDAD = 'Curitiba';
+
+function switchTab(id, el) {
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  el.classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+}
+
+function mCPF(el) {
+  el.value = el.value.replace(/\D/g,'').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+}
+
+var NUMS = {1:'um',2:'dois',3:'três',4:'quatro',5:'cinco',6:'seis',7:'sete',8:'oito',9:'nove',10:'dez',15:'quinze',20:'vinte',25:'vinte e cinco',30:'trinta',40:'quarenta',50:'cinquenta',60:'sessenta',80:'oitenta',100:'cem',120:'cento e vinte',150:'cento e cinquenta',180:'cento e oitenta',200:'duzentos'};
+function ext(n){ return NUMS[parseInt(n)] || n; }
+
+function hoje() {
+  var d = new Date();
+  var meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  return { dia: String(d.getDate()).padStart(2,'0'), mes: meses[d.getMonth()], ano: d.getFullYear() };
+}
+
+function gerarTexto(nome, cpf, freq, mes, dur, val) {
+  var h = hoje();
+  var nD  = nome || '___________________________';
+  var cD  = cpf  || '_________________';
+  var fD  = freq || '_';
+  var mD  = mes  || '_';
+  var dD  = dur  || '__';
+  var vD  = val  || '___';
+  var fE  = freq ? ext(freq) : '___';
+  var mE  = mes  ? ext(mes)  : '___';
+  var dE  = dur  ? ext(dur)  : '___';
+  var vE  = val  ? ext(val)  : '___';
+  var ps  = parseInt(freq)===1 ? 'aula por semana'  : 'aulas por semana';
+  var pm  = parseInt(mes)===1  ? 'aula mensal'      : 'aulas mensais';
+
+  return 'CONTRATANTE: '+nD+', CPF: '+cD+'.\n\n'
+    +'CONTRATADA: '+PROF+', CPF: '+CPFP+'.\n\n'
+    +'1. OBJETO\n\n'
+    +'A CONTRATADA se compromete a ministrar aulas de inglês online, individuais, na modalidade 1:1, '
+    +'com frequência de '+fD+' ('+fE+') '+ps+', totalizando '+mD+' ('+mE+') '+pm+', '
+    +'com duração de '+dD+' ('+dE+') minutos cada uma.\n\n'
+    +'2. VALOR E PAGAMENTO\n\n'
+    +'O valor mensal é de R$ '+vD+' ('+vE+' reais), a ser pago até o dia 05 de cada mês, '
+    +'via Pix/transferência — CHAVE CPF: '+PIX+'. O não pagamento até a data acordada '
+    +'poderá resultar na suspensão das aulas.\n\n'
+    +'3. AGENDAMENTO\n\n'
+    +'As aulas serão agendadas de comum acordo entre as partes, respeitando a disponibilidade '
+    +'de ambas, preferencialmente nos mesmos dias e horários semanais.\n\n'
+    +'4. CANCELAMENTO E REAGENDAMENTO\n\n'
+    +'Cancelamentos devem ser comunicados com mínimo de 24 (vinte e quatro) horas de antecedência. '
+    +'Aulas canceladas dentro do prazo poderão ser reagendadas. Cancelamentos fora do prazo ou '
+    +'faltas sem aviso não serão repostas.\n\n'
+    +'Local e data: '+CIDAD+', '+h.dia+' de '+h.mes+' de '+h.ano+'.';
+}
+
+function g(id){ return document.getElementById(id).value.trim(); }
+
+function preview() {
+  document.getElementById('prev').textContent = gerarTexto(g('f-nome'),g('f-cpf'),g('f-freq'),g('f-mes'),g('f-dur'),g('f-val'));
+}
+
+preview();
+
+function gerar() {
+  var nome = g('f-nome'), cpf = g('f-cpf');
+  if (!nome || !cpf) { alert('Preencha pelo menos o nome e CPF da aluna.'); return; }
+
+  var texto = gerarTexto(nome, cpf, g('f-freq'), g('f-mes'), g('f-dur'), g('f-val'));
+  var h = hoje();
+  var freq = g('f-freq'), mes = g('f-mes');
+
+  // Monta o HTML da aluna por concatenação — sem template literal aninhado
+  var s = '';
+  s += '<!DOCTYPE html>';
+  s += '<html lang="pt-BR">';
+  s += '<head>';
+  s += '<meta charset="UTF-8">';
+  s += '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
+  s += '<title>Contrato para assinar</title>';
+  s += '<style>';
+  s += '*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}';
+  s += ':root{--bg:#fff;--bg2:#fffdf7;--bg3:#f0eeff;--border:#e2d8f0;--text:#1a1a18;--text2:#5a5a56;--text3:#9a9a94;--pink:#FADADD;--blue:#DDEEFF;--mint:#DFF5EA;--lav:#E6D9FF;--yell:#FFF2B3}';
+  s += 'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg2);color:var(--text);min-height:100vh;padding:24px 16px 48px}';
+  s += '.w{max-width:640px;margin:0 auto}';
+  s += 'h1{font-size:21px;font-weight:600;margin-bottom:4px;letter-spacing:-.3px}';
+  s += '.sub{font-size:13px;color:var(--text3);margin-bottom:22px}';
+  s += '.box{background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--pink);border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:13px;color:var(--text2);line-height:1.8}';
+  s += '.ir{display:flex;align-items:flex-start;margin-bottom:4px}';
+  s += '.ir:last-child{margin-bottom:0}';
+  s += '.st{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--blue);border:1px solid #b8d8f0;border-radius:50%;font-size:11px;font-weight:600;margin-right:8px;color:var(--text);flex-shrink:0}';
+  s += '.lbl{display:block;font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;margin-top:16px}';
+  s += '.contrato{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;font-size:13.5px;line-height:1.75;white-space:pre-wrap;max-height:320px;overflow-y:auto}';
+  s += '.frow{display:flex;gap:10px;margin-top:16px}';
+  s += '.fc{flex:1}';
+  s += '.fc.sm{flex:0 0 175px}';
+  s += 'input{width:100%;padding:10px 13px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-family:inherit;color:var(--text);background:var(--bg);outline:none;-webkit-appearance:none}';
+  s += 'input:focus{border-color:var(--text)}';
+  s += '.sw{border:1px solid var(--border);border-radius:6px;overflow:hidden;position:relative;background:var(--bg);margin-top:6px;touch-action:none}';
+  s += 'canvas{display:block;width:100%;height:160px;touch-action:none;cursor:crosshair}';
+  s += '.hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text3);pointer-events:none}';
+  s += '.br{display:flex;gap:8px;margin-top:14px}';
+  s += 'button{display:flex;align-items:center;justify-content:center;padding:12px 18px;border:1px solid var(--border);border-radius:6px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;background:var(--bg);color:var(--text)}';
+  s += 'button.p{flex:1;background:var(--pink);color:#1a1a18;border-color:#e8b8be;font-weight:600}';
+  s += '@media(max-width:480px){body{padding:16px 12px 40px}h1{font-size:18px}.frow{flex-direction:column}.fc.sm{flex:unset}}';
+  s += '</style>';
+  s += '</head>';
+  s += '<body>';
+  s += '<div class="w">';
+  s += '<h1>Contrato para assinar</h1>';
+  s += '<p class="sub">Leia o contrato, confirme seus dados e assine</p>';
+  s += '<div class="box">';
+  s += '<div class="ir"><span class="st">1</span>Leia o contrato com seus dados já preenchidos</div>';
+  s += '<div class="ir"><span class="st">2</span>Confirme seu nome e CPF abaixo</div>';
+  s += '<div class="ir"><span class="st">3</span>Assine e baixe o PDF para enviar à professora</div>';
+  s += '</div>';
+  s += '<span class="lbl" style="margin-top:0">Contrato</span>';
+  s += '<div class="contrato" id="tc"></div>';
+  s += '<div class="frow">';
+  s += '<div class="fc"><span class="lbl" style="margin-top:0">Nome completo</span>';
+  s += '<input id="nome" type="text" placeholder="Seu nome completo"></div>';
+  s += '<div class="fc sm"><span class="lbl" style="margin-top:0">CPF</span>';
+  s += '<input id="cpf" type="text" placeholder="000.000.000-00" maxlength="14"></div>';
+  s += '</div>';
+  s += '<span class="lbl">Assinatura — desenhe com o dedo ou mouse</span>';
+  s += '<div class="sw"><canvas id="cv"></canvas><div class="hint" id="hint">Assine aqui</div></div>';
+  s += '<div class="br"><button onclick="lp()">Limpar</button><button class="p" onclick="baixar()">Baixar PDF assinado ↓</button></div>';
+  s += '</div>';
+  s += '<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"><';
+  s += '/script>';
+  s += '<script>';
+  s += 'var CT=' + JSON.stringify(texto) + ';';
+  s += 'var NP=' + JSON.stringify(PROF)  + ';';
+  s += 'var FQ=' + JSON.stringify(freq)  + ';';
+  s += 'var MS=' + JSON.stringify(mes)   + ';';
+  s += 'document.getElementById("tc").textContent=CT;';
+  s += 'var nEl=document.getElementById("nome"),cEl=document.getElementById("cpf");';
+  s += 'nEl.value=' + JSON.stringify(nome) + ';';
+  s += 'cEl.value=' + JSON.stringify(cpf)  + ';';
+  s += 'function mCPF(v){return v.replace(/\\D/g,"").replace(/(\\d{3})(\\d)/,"$1.$2").replace(/(\\d{3})(\\d)/,"$1.$2").replace(/(\\d{3})(\\d{1,2})$/,"$1-$2")}';
+  s += 'cEl.addEventListener("input",function(){this.value=mCPF(this.value)});';
+  s += 'var cv=document.getElementById("cv"),ctx,dx,dy,ok=false,sig=false;';
+  s += 'var dpr=window.devicePixelRatio||1;';
+  s += 'window.addEventListener("load",function(){';
+  s += '  var r=cv.getBoundingClientRect();';
+  s += '  cv.width=Math.round(r.width*dpr);cv.height=Math.round(r.height*dpr);';
+  s += '  ctx=cv.getContext("2d");ctx.scale(dpr,dpr);';
+  s += '  ctx.strokeStyle="#1a1a18";ctx.lineWidth=2.2;ctx.lineCap="round";ctx.lineJoin="round";';
+  s += '  cv.addEventListener("mousedown",function(e){ok=true;var p=gp(e);dx=p.x;dy=p.y;hs()});';
+  s += '  cv.addEventListener("mousemove",function(e){if(!ok)return;var p=gp(e);dr(p.x,p.y)});';
+  s += '  cv.addEventListener("mouseup",function(){ok=false});';
+  s += '  cv.addEventListener("mouseleave",function(){ok=false});';
+  s += '  cv.addEventListener("touchstart",function(e){e.preventDefault();ok=true;var p=gp(e);dx=p.x;dy=p.y;hs()},{passive:false});';
+  s += '  cv.addEventListener("touchmove",function(e){e.preventDefault();if(!ok)return;var p=gp(e);dr(p.x,p.y)},{passive:false});';
+  s += '  cv.addEventListener("touchend",function(){ok=false});';
+  s += '});';
+  s += 'function hs(){document.getElementById("hint").style.display="none";sig=true}';
+  s += 'function gp(e){var r=cv.getBoundingClientRect(),src=e.touches?e.touches[0]:e;return{x:src.clientX-r.left,y:src.clientY-r.top}}';
+  s += 'function dr(x,y){ctx.beginPath();ctx.moveTo(dx,dy);ctx.lineTo(x,y);ctx.stroke();dx=x;dy=y}';
+  s += 'function lp(){ctx.clearRect(0,0,cv.width/dpr,cv.height/dpr);sig=false;document.getElementById("hint").style.display="flex"}';
+  s += 'function baixar(){';
+  s += '  if(!sig){alert("Por favor, assine antes de baixar.");return}';
+  s += '  var nome=nEl.value.trim()||"Contratante";';
+  s += '  var cpf=cEl.value.trim();';
+  s += '  if(!cpf){alert("Por favor, confirme seu CPF.");return}';
+  s += '  var jsPDF=window.jspdf.jsPDF;';
+  s += '  var doc=new jsPDF({unit:"pt",format:"a4"});';
+  s += '  var pw=doc.internal.pageSize.getWidth(),ph=doc.internal.pageSize.getHeight(),mg=48,mw=pw-mg*2;';
+  s += '  doc.setFont("helvetica","bold");doc.setFontSize(15);';
+  s += '  doc.text("Contrato de Prestação de Serviços Educacionais",mg,50);';
+  s += '  if(FQ||MS){doc.setFont("helvetica","normal");doc.setFontSize(11);doc.setTextColor(60);';
+  s += '    var sub="("+[FQ?FQ+"x por semana":"",MS?MS+" aulas/mês":""].filter(Boolean).join(" — ")+")";';
+  s += '    doc.text(sub,mg,66);}';
+  s += '  doc.setFont("helvetica","normal");doc.setFontSize(9);doc.setTextColor(130);';
+  s += '  doc.text(["Contratada: "+NP,"Contratante: "+nome+"   CPF: "+cpf].join("   ·   "),mg,80);';
+  s += '  doc.setTextColor(0);doc.setFontSize(10.5);';
+  s += '  var ls=doc.splitTextToSize(CT,mw);';
+  s += '  var y=112;';
+  s += '  for(var i=0;i<ls.length;i++){if(y>ph-150){doc.addPage();y=48}doc.text(ls[i],mg,y);y+=15}';
+  s += '  if(y>ph-140){doc.addPage();y=48}';
+  s += '  y+=28;';
+  s += '  var colE=mg,colD=mg+260,sigW=190,sigH=65;';
+  s += '  var sd=cv.toDataURL("image/png");';
+  s += '  doc.addImage(sd,"PNG",colE,y,sigW,sigH);';
+  s += '  doc.setFont("helvetica","bold");doc.setFontSize(10);doc.setTextColor(0);';
+  s += '  doc.text(NP.toUpperCase(),colD,y+20);';
+  s += '  var ly=y+sigH+4;';
+  s += '  doc.setDrawColor(170);';
+  s += '  doc.line(colE,ly,colE+sigW,ly);';
+  s += '  doc.line(colD,ly,colD+sigW,ly);';
+  s += '  doc.setFont("helvetica","normal");doc.setFontSize(9);doc.setTextColor(100);';
+  s += '  doc.text(nome,colE,ly+12);doc.text("CPF: "+cpf,colE,ly+23);';
+  s += '  doc.text(NP,colD,ly+12);';
+  s += '  doc.save("contrato-" + nome.replace(/ /g, "-").toLowerCase() + ".pdf");';
+  s += '}';
+  s += '<';
+  s += '/script>';
+  s += '</body>';
+  s += '</html>';
+
+  var blob = new Blob([s], {type: 'text/html;charset=utf-8'});
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  a.href   = url;
+  a.download = 'contrato-para-assinar.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  document.getElementById('ok-msg').style.display = 'block';
+}
+</script>
+</body>
+</html>
