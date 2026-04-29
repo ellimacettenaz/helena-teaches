@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -64,6 +65,7 @@ input:focus { border-color: var(--text); }
   </div>
 
   <!-- PROFESSORA -->
+
   <div class="panel active" id="tab-prof">
     <div class="info-box">
       <div class="ir"><span class="st">1</span>Preencha os dados abaixo</div>
@@ -71,53 +73,57 @@ input:focus { border-color: var(--text); }
       <div class="ir"><span class="st">3</span>Envie o arquivo HTML gerado para sua aluna</div>
     </div>
 
-    <div class="sec">Dados da aluna</div>
-    <div class="frow">
-      <div class="field">
-        <label>Nome completo</label>
-        <input type="text" id="f-nome" placeholder="Ex: Cami Silva" oninput="preview()">
-      </div>
-      <div class="field sm">
-        <label>CPF</label>
-        <input type="text" id="f-cpf" placeholder="000.000.000-00" maxlength="14" oninput="mCPF(this);preview()">
-      </div>
-    </div>
+```
+<div class="sec">Dados da aluna</div>
+<div class="frow">
+  <div class="field">
+    <label>Nome completo</label>
+    <input type="text" id="f-nome" placeholder="Ex: Cami Silva" oninput="preview()">
+  </div>
+  <div class="field sm">
+    <label>CPF</label>
+    <input type="text" id="f-cpf" placeholder="000.000.000-00" maxlength="14" oninput="mCPF(this);preview()">
+  </div>
+</div>
 
-    <div class="divider"></div>
-    <div class="sec">Condições do contrato</div>
-    <div class="frow">
-      <div class="field xs">
-        <label>Aulas/semana</label>
-        <input type="text" id="f-freq" placeholder="Ex: 2" oninput="preview()">
-      </div>
-      <div class="field xs">
-        <label>Aulas/mês</label>
-        <input type="text" id="f-mes" placeholder="Ex: 8" oninput="preview()">
-      </div>
-      <div class="field xs">
-        <label>Duração (min)</label>
-        <input type="text" id="f-dur" placeholder="Ex: 30" oninput="preview()">
-      </div>
-      <div class="field xs">
-        <label>Valor mensal</label>
-        <input type="text" id="f-val" placeholder="Ex: 150" oninput="preview()">
-      </div>
-    </div>
+<div class="divider"></div>
+<div class="sec">Condições do contrato</div>
+<div class="frow">
+  <div class="field xs">
+    <label>Aulas/semana</label>
+    <input type="text" id="f-freq" placeholder="Ex: 2" oninput="preview()">
+  </div>
+  <div class="field xs">
+    <label>Aulas/mês</label>
+    <input type="text" id="f-mes" placeholder="Ex: 8" oninput="preview()">
+  </div>
+  <div class="field xs">
+    <label>Duração (min)</label>
+    <input type="text" id="f-dur" placeholder="Ex: 30" oninput="preview()">
+  </div>
+  <div class="field xs">
+    <label>Valor mensal</label>
+    <input type="text" id="f-val" placeholder="Ex: 150" oninput="preview()">
+  </div>
+</div>
 
-    <div class="prev-label">Prévia do contrato</div>
-    <div class="prev-box" id="prev"></div>
+<div class="prev-label">Prévia do contrato</div>
+<div class="prev-box" id="prev"></div>
 
-    <button class="btn primary" onclick="gerar()">Gerar link para assinatura →</button>
-    <div class="ok" id="ok-msg">
-      <div style="margin-bottom:8px">✓ Link gerado! Copie e mande para sua aluna pelo WhatsApp ou e-mail.</div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <input id="link-gerado" type="text" readonly style="flex:1;font-size:12px;padding:8px 10px;border:1px solid #b8e8cc;border-radius:6px;background:#fff;color:#1a1a18;cursor:pointer" onclick="this.select()" placeholder="">
-        <button onclick="copiarLink()" style="padding:8px 14px;border:1px solid #b8e8cc;border-radius:6px;font-size:13px;font-weight:600;background:#FADADD;color:#1a1a18;cursor:pointer;white-space:nowrap;font-family:inherit">Copiar</button>
-      </div>
-    </div>
+<button class="btn primary" onclick="gerar()">Gerar link para assinatura →</button>
+<div class="ok" id="ok-msg">
+  <div style="margin-bottom:8px">✓ Link gerado! Copie e mande para sua aluna pelo WhatsApp ou e-mail.</div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <input id="link-gerado" type="text" readonly style="flex:1;font-size:12px;padding:8px 10px;border:1px solid #b8e8cc;border-radius:6px;background:#fff;color:#1a1a18;cursor:pointer" onclick="this.select()" placeholder="">
+    <button onclick="copiarLink()" style="padding:8px 14px;border:1px solid #b8e8cc;border-radius:6px;font-size:13px;font-weight:600;background:#FADADD;color:#1a1a18;cursor:pointer;white-space:nowrap;font-family:inherit">Copiar</button>
+  </div>
+</div>
+```
+
   </div>
 
   <!-- ALUNA -->
+
   <div class="panel" id="tab-aluna">
     <div class="empty">
       <div class="icon">📬</div>
@@ -209,9 +215,14 @@ document.addEventListener("DOMContentLoaded", function(){
     var texto = gerarTexto(nomeP, cpfP, freqP, mesP, durP, valP);
     // Guarda dados globais para o PDF
     window._pdfDados = {texto: texto, freq: freqP, mes: mesP};
-    // Mostra painel da aluna com contrato
-    document.getElementById('tab-aluna').innerHTML = alunaHTML(nomeP, cpfP, texto, freqP, mesP);
-    document.getElementById('tab-aluna').classList.add('active');
+    // Modo aluna: substitui página inteira por formulário de assinatura
+    document.body.innerHTML = '<div style="font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;max-width:640px;margin:0 auto;padding:24px 16px 48px;background:#fffdf7;min-height:100vh;color:#1a1a18" id="aluna-wrap">'
+      + alunaHTML(nomeP, cpfP, texto, freqP, mesP)
+      + '</div>';
+    // Recarrega jsPDF pois substituímos o body
+    var sc = document.createElement('script');
+    sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    document.head.appendChild(sc);
     initCanvas();
   } else {
     // Modo professora
@@ -291,11 +302,19 @@ function limparSig(){
 }
 
 function baixarPDF() {
+  console.log('baixarPDF chamado, _pdfDados:', window._pdfDados);
   var _d = window._pdfDados || {};
   var texto = _d.texto || '';
   var freq  = _d.freq  || '';
   var mes   = _d.mes   || '';
-  if(!_sigFeito){alert('Por favor, assine antes de baixar.');return}
+  // Verifica se canvas tem conteúdo
+  var _cvCheck = document.getElementById('sig-canvas');
+  if(_cvCheck){
+    var _imgData = _cvCheck.getContext('2d').getImageData(0,0,_cvCheck.width,_cvCheck.height).data;
+    var _temSig = false;
+    for(var _i=3;_i<_imgData.length;_i+=4){ if(_imgData[_i]>0){_temSig=true;break;} }
+    if(!_temSig){alert('Por favor, assine antes de baixar.');return}
+  }
   var nome = document.getElementById('a-nome').value.trim() || 'Contratante';
   var cpf  = document.getElementById('a-cpf').value.trim();
   if(!cpf){alert('Por favor, confirme seu CPF.');return}
@@ -354,5 +373,6 @@ function gerar() {
   document.getElementById('ok-msg').style.display = 'block';
 }
 </script>
+
 </body>
 </html>
