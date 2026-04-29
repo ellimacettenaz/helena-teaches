@@ -207,6 +207,8 @@ document.addEventListener("DOMContentLoaded", function(){
     var durP  = params.get('dur')  || '';
     var valP  = params.get('val')  || '';
     var texto = gerarTexto(nomeP, cpfP, freqP, mesP, durP, valP);
+    // Guarda dados globais para o PDF
+    window._pdfDados = {texto: texto, freq: freqP, mes: mesP};
     // Mostra painel da aluna com contrato
     document.getElementById('tab-aluna').innerHTML = alunaHTML(nomeP, cpfP, texto, freqP, mesP);
     document.getElementById('tab-aluna').classList.add('active');
@@ -247,7 +249,7 @@ function alunaHTML(nome, cpf, texto, freq, mes) {
     + '<div id="sig-hint" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text3);pointer-events:none">Assine aqui</div></div>'
     + '<div style="display:flex;gap:8px;margin-top:14px">'
     + '<button onclick="limparSig()" style="padding:12px 18px;border:1px solid var(--border);border-radius:var(--rs);font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;background:var(--bg);color:var(--text)">Limpar</button>'
-    + '<button onclick="baixarPDF(' + JSON.stringify(texto) + ',' + JSON.stringify(freq) + ',' + JSON.stringify(mes) + ')" style="flex:1;padding:12px 18px;border:1px solid var(--border);border-radius:var(--rs);font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;background:var(--pink);color:#1a1a18;border-color:#e8b8be">Baixar PDF assinado ↓</button>'
+    + '<button onclick="baixarPDF()" style="flex:1;padding:12px 18px;border:1px solid var(--border);border-radius:var(--rs);font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;background:var(--pink);color:#1a1a18;border-color:#e8b8be">Baixar PDF assinado ↓</button>'
     + '</div>';
 }
 
@@ -288,7 +290,11 @@ function limparSig(){
   document.getElementById('sig-hint').style.display='flex';
 }
 
-function baixarPDF(texto, freq, mes) {
+function baixarPDF() {
+  var _d = window._pdfDados || {};
+  var texto = _d.texto || '';
+  var freq  = _d.freq  || '';
+  var mes   = _d.mes   || '';
   if(!_sigFeito){alert('Por favor, assine antes de baixar.');return}
   var nome = document.getElementById('a-nome').value.trim() || 'Contratante';
   var cpf  = document.getElementById('a-cpf').value.trim();
