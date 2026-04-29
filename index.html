@@ -59,18 +59,19 @@ input:focus { border-color: var(--text); }
   <h1>Contrato de aulas de inglês</h1>
   <p class="sub">Sem cadastro · Sem serviços externos · Funciona offline</p>
 
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('prof',this)">✏️ Sou a professora</button>
-    <button class="tab" onclick="switchTab('aluna',this)">📝 Sou a aluna</button>
-  </div>
-
   <!-- PROFESSORA -->
 
-  <div class="panel active" id="tab-prof">
+  <div id="tela-senha" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:16px">
+    <p style="font-size:15px;color:var(--text2);margin-bottom:4px">Digite a senha para continuar</p>
+    <input id="campo-senha" type="password" placeholder="Senha" style="width:220px;padding:10px 14px;border:1px solid var(--border);border-radius:var(--rs);font-size:15px;font-family:inherit;text-align:center;outline:none" onkeydown="if(event.key==='Enter')verificarSenha()">
+    <button onclick="verificarSenha()" style="width:220px;padding:11px;background:var(--pink);border:1px solid #e8b8be;border-radius:var(--rs);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;color:#1a1a18">Entrar</button>
+    <p id="senha-erro" style="color:#c0392b;font-size:13px;display:none">Senha incorreta.</p>
+  </div>
+  <div id="tab-prof" style="display:none">
     <div class="info-box">
       <div class="ir"><span class="st">1</span>Preencha os dados abaixo</div>
       <div class="ir"><span class="st">2</span>Clique em "Gerar arquivo para assinatura"</div>
-      <div class="ir"><span class="st">3</span>Envie o arquivo HTML gerado para sua aluna</div>
+      <div class="ir"><span class="st">3</span>Copie o link e envie para sua aluna pelo WhatsApp</div>
     </div>
 
 ```
@@ -199,6 +200,19 @@ function preview() {
   document.getElementById('prev').textContent = gerarTexto(g('f-nome'),g('f-cpf'),g('f-freq'),g('f-mes'),g('f-dur'),g('f-val'));
 }
 
+function verificarSenha() {
+  var s = document.getElementById('campo-senha').value;
+  if (s === '123456') {
+    document.getElementById('tela-senha').style.display = 'none';
+    document.getElementById('tab-prof').style.display = 'block';
+    preview();
+  } else {
+    document.getElementById('senha-erro').style.display = 'block';
+    document.getElementById('campo-senha').value = '';
+    document.getElementById('campo-senha').focus();
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function(){
   // Lê parâmetros da URL (modo aluna)
   var params = new URLSearchParams(window.location.search);
@@ -225,8 +239,8 @@ document.addEventListener("DOMContentLoaded", function(){
     document.head.appendChild(sc);
     initCanvas();
   } else {
-    // Modo professora
-    preview();
+    // Modo professora — aguarda senha
+    document.getElementById("tab-prof").style.display = "none";
   }
 });
 
