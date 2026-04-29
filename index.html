@@ -217,9 +217,9 @@ document.addEventListener("DOMContentLoaded", function(){
   // Lê parâmetros da URL (modo aluna)
   var params = new URLSearchParams(window.location.search);
   if (params.has('nome') || params.has('cpf')) {
-    // Tem parâmetros — modo aluna: esconde aba professora, mostra contrato preenchido
+    // Modo aluna: esconde tela de senha e formulário da professora
+    document.getElementById('tela-senha').style.display = 'none';
     document.getElementById('tab-prof').style.display = 'none';
-    document.querySelector('.tabs').style.display = 'none';
     var nomeP = params.get('nome') || '';
     var cpfP  = params.get('cpf')  || '';
     var freqP = params.get('freq') || '';
