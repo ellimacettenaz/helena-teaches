@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contrato de Aulas de Inglês</title>
+<title>🎀 Helena Teaches</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -56,8 +56,8 @@ input:focus { border-color: var(--text); }
 </head>
 <body>
 <div class="wrap">
-  <h1>Contrato de aulas de inglês</h1>
-  <p class="sub">Gerencie seus contratos de forma simples</p>
+  <h1>🎀 Helena Teaches</h1>
+  <p class="sub">Gestão de contratos de aulas de inglês</p>
 
   <!-- PROFESSORA -->
 
@@ -78,8 +78,11 @@ input:focus { border-color: var(--text); }
 <div class="sec">Dados da aluna</div>
 
 <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);cursor:pointer;font-weight:500;text-transform:none;letter-spacing:0">
-    <input type="checkbox" id="f-menor" onchange="toggleMenor()" style="width:16px;height:16px;cursor:pointer;accent-color:#FADADD">
+  <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text2);cursor:pointer;font-weight:500;text-transform:none;letter-spacing:0;user-select:none">
+    <input type="checkbox" id="f-menor" onchange="toggleMenor()" style="display:none">
+    <span id="toggle-menor" style="display:inline-flex;align-items:center;width:40px;height:22px;background:#ddddd8;border-radius:11px;transition:background 0.2s;flex-shrink:0;position:relative">
+      <span style="position:absolute;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2)" id="toggle-knob"></span>
+    </span>
     Aluno menor de idade
   </label>
 </div>
@@ -232,6 +235,11 @@ function toggleMenor() {
   document.getElementById('wrap-resp').style.display = menor ? 'block' : 'none';
   document.getElementById('wrap-cpf').style.display  = menor ? 'none'  : 'block';
   document.getElementById('label-nome').textContent  = menor ? 'Nome do aluno' : 'Nome completo';
+  // Anima o toggle
+  var track = document.getElementById('toggle-menor');
+  var knob  = document.getElementById('toggle-knob');
+  track.style.background = menor ? '#FADADD' : '#ddddd8';
+  knob.style.transform   = menor ? 'translateX(18px)' : 'translateX(0)';
   preview();
 }
 
