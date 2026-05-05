@@ -288,6 +288,8 @@ document.addEventListener("DOMContentLoaded", function(){
     window._pdfDados = {texto: texto, freq: freqP, mes: mesP, nome: nomeAssin, cpf: cpfAssin};
     // Modo aluna: substitui página inteira por formulário de assinatura
     document.body.innerHTML = '<div style="font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;max-width:640px;margin:0 auto;padding:24px 16px 48px;background:#fffdf7;min-height:100vh;color:#1a1a18" id="aluna-wrap">'
+      + '<h1 style="font-size:22px;font-weight:600;letter-spacing:-0.3px;margin-bottom:4px;border-bottom:2px solid #E6D9FF;padding-bottom:6px;display:inline-block">🎀 Helena Teaches</h1>'
+      + '<p style="font-size:13px;color:#9a9a94;margin-bottom:24px">Contrato de aulas de inglês</p>'
       + alunaHTML(nomeAssin, cpfAssin, texto, freqP, mesP)
       + '</div>';
     // Recarrega jsPDF pois substituímos o body
