@@ -76,14 +76,35 @@ input:focus { border-color: var(--text); }
 
 ```
 <div class="sec">Dados da aluna</div>
+
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+  <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);cursor:pointer;font-weight:500;text-transform:none;letter-spacing:0">
+    <input type="checkbox" id="f-menor" onchange="toggleMenor()" style="width:16px;height:16px;cursor:pointer;accent-color:#FADADD">
+    Aluno menor de idade
+  </label>
+</div>
+
 <div class="frow">
   <div class="field">
-    <label>Nome completo</label>
+    <label id="label-nome">Nome completo</label>
     <input type="text" id="f-nome" placeholder="Ex: Cami Silva" oninput="preview()">
   </div>
-  <div class="field sm">
+  <div class="field sm" id="wrap-cpf">
     <label>CPF</label>
     <input type="text" id="f-cpf" placeholder="000.000.000-00" maxlength="14" oninput="mCPF(this);preview()">
+  </div>
+</div>
+
+<div id="wrap-resp" style="display:none">
+  <div class="frow">
+    <div class="field">
+      <label>Nome do responsável legal</label>
+      <input type="text" id="f-resp" placeholder="Ex: Maria Silva" oninput="preview()">
+    </div>
+    <div class="field sm">
+      <label>CPF do responsável</label>
+      <input type="text" id="f-cpf-resp" placeholder="000.000.000-00" maxlength="14" oninput="mCPF(this);preview()">
+    </div>
   </div>
 </div>
 
@@ -159,7 +180,7 @@ function hoje() {
   return { dia: String(d.getDate()).padStart(2,'0'), mes: meses[d.getMonth()], ano: d.getFullYear() };
 }
 
-function gerarTexto(nome, cpf, freq, mes, dur, val) {
+function gerarTexto(nome, cpf, freq, mes, dur, val, menor, resp, cpfR) {
   var h = hoje();
   var nD  = nome || '___________________________';
   var cD  = cpf  || '_________________';
@@ -174,7 +195,17 @@ function gerarTexto(nome, cpf, freq, mes, dur, val) {
   var ps  = parseInt(freq)===1 ? 'aula por semana'  : 'aulas por semana';
   var pm  = parseInt(mes)===1  ? 'aula mensal'      : 'aulas mensais';
 
-  return 'CONTRATANTE: '+nD+', CPF: '+cD+'.\n\n'
+  var linhaContratante;
+  if (menor && resp) {
+    var rD   = resp || '___________________________';
+    var crD  = cpfR || '_________________';
+    linhaContratante = 'CONTRATANTE: '+rD+', CPF: '+crD
+      +', responsável legal pelo(a) aluno(a) '+nD+'.\n\n';
+  } else {
+    linhaContratante = 'CONTRATANTE: '+nD+', CPF: '+cD+'.\n\n';
+  }
+
+  return linhaContratante
     +'CONTRATADA: '+PROF+', CPF: '+CPFP+'.\n\n'
     +'1. OBJETO\n\n'
     +'A CONTRATADA se compromete a ministrar aulas de ingl\u00EAs online, individuais, na modalidade 1:1, '
@@ -196,8 +227,22 @@ function gerarTexto(nome, cpf, freq, mes, dur, val) {
 
 function g(id){ return document.getElementById(id).value.trim(); }
 
+function toggleMenor() {
+  var menor = document.getElementById('f-menor').checked;
+  document.getElementById('wrap-resp').style.display = menor ? 'block' : 'none';
+  document.getElementById('wrap-cpf').style.display  = menor ? 'none'  : 'block';
+  document.getElementById('label-nome').textContent  = menor ? 'Nome do aluno' : 'Nome completo';
+  preview();
+}
+
 function preview() {
-  document.getElementById('prev').textContent = gerarTexto(g('f-nome'),g('f-cpf'),g('f-freq'),g('f-mes'),g('f-dur'),g('f-val'));
+  var menor = document.getElementById('f-menor').checked;
+  var resp  = menor ? g('f-resp')     : '';
+  var cpfR  = menor ? g('f-cpf-resp') : '';
+  document.getElementById('prev').textContent = gerarTexto(
+    g('f-nome'), g('f-cpf'), g('f-freq'), g('f-mes'), g('f-dur'), g('f-val'),
+    menor, resp, cpfR
+  );
 }
 
 function verificarSenha() {
@@ -226,12 +271,18 @@ document.addEventListener("DOMContentLoaded", function(){
     var mesP  = params.get('mes')  || '';
     var durP  = params.get('dur')  || '';
     var valP  = params.get('val')  || '';
-    var texto = gerarTexto(nomeP, cpfP, freqP, mesP, durP, valP);
+    var menorP = params.get('menor') === '1';
+    var respP  = params.get('resp') || '';
+    var cpfRP  = params.get('cpfr') || '';
+    var texto = gerarTexto(nomeP, cpfP, freqP, mesP, durP, valP, menorP, respP, cpfRP);
+    // Quem assina: responsável (menor) ou o próprio aluno
+    var nomeAssin = menorP && respP ? respP : nomeP;
+    var cpfAssin  = menorP && cpfRP ? cpfRP : cpfP;
     // Guarda dados globais para o PDF
-    window._pdfDados = {texto: texto, freq: freqP, mes: mesP};
+    window._pdfDados = {texto: texto, freq: freqP, mes: mesP, nome: nomeAssin, cpf: cpfAssin};
     // Modo aluna: substitui página inteira por formulário de assinatura
     document.body.innerHTML = '<div style="font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif;max-width:640px;margin:0 auto;padding:24px 16px 48px;background:#fffdf7;min-height:100vh;color:#1a1a18" id="aluna-wrap">'
-      + alunaHTML(nomeP, cpfP, texto, freqP, mesP)
+      + alunaHTML(nomeAssin, cpfAssin, texto, freqP, mesP)
       + '</div>';
     // Recarrega jsPDF pois substituímos o body
     var sc = document.createElement('script');
@@ -275,6 +326,9 @@ function alunaHTML(nome, cpf, texto, freq, mes) {
     + '<div style="display:flex;gap:8px;margin-top:14px">'
     + '<button onclick="limparSig()" style="padding:12px 18px;border:1px solid var(--border);border-radius:var(--rs);font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;background:var(--bg);color:var(--text)">Limpar</button>'
     + '<button onclick="baixarPDF()" style="flex:1;padding:12px 18px;border:1px solid var(--border);border-radius:var(--rs);font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;background:var(--pink);color:#1a1a18;border-color:#e8b8be">Baixar PDF assinado ↓</button>'
+    + '</div>'
+    + '<div style="text-align:center;margin-top:32px;padding-top:16px;border-top:1px solid #e2d8f0;font-size:12px;color:#9a9a94">'
+    + 'Desenvolvido por <a href="https://wa.me/5541991735575" target="_blank" style="color:#9a9a94;text-decoration:none;font-weight:500">Camille Zanette 💬</a>'
     + '</div>';
 }
 
@@ -368,20 +422,28 @@ function baixarPDF() {
 }
 
 function gerar() {
-  var nome = g('f-nome'), cpf = g('f-cpf');
-  if (!nome || !cpf) { alert('Preencha pelo menos o nome e CPF da aluna.'); return; }
+  var menor = document.getElementById('f-menor').checked;
+  var nome  = g('f-nome'), cpf = g('f-cpf');
+  var resp  = menor ? g('f-resp')     : '';
+  var cpfR  = menor ? g('f-cpf-resp') : '';
 
-  var texto = gerarTexto(nome, cpf, g('f-freq'), g('f-mes'), g('f-dur'), g('f-val'));
-  var h = hoje();
+  if (!nome) { alert('Preencha o nome do aluno.'); return; }
+  if (menor && (!resp || !cpfR)) { alert('Preencha o nome e CPF do responsável legal.'); return; }
+  if (!menor && !cpf) { alert('Preencha o CPF da aluna.'); return; }
+
+  var texto = gerarTexto(nome, cpf, g('f-freq'), g('f-mes'), g('f-dur'), g('f-val'), menor, resp, cpfR);
   var freq = g('f-freq'), mes = g('f-mes');
 
-  // Monta o HTML da aluna por concatena\u00E7\u00E3o \u2014 sem template literal aninhado
-  // Gera URL com parâmetros
   var params = new URLSearchParams({
     nome: nome, cpf: cpf,
-    freq: g('f-freq'), mes: g('f-mes'),
+    freq: freq, mes: mes,
     dur: g('f-dur'), val: g('f-val')
   });
+  if (menor) {
+    params.set('menor', '1');
+    params.set('resp', resp);
+    params.set('cpfr', cpfR);
+  }
   var link = window.location.origin + window.location.pathname + '?' + params.toString();
   document.getElementById('link-gerado').value = link;
   document.getElementById('ok-msg').style.display = 'block';
